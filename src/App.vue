@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <header>
-    <h1>Vue Gitfinder General</h1>
-    </header>
+    <Header />
     <div class="container">
      <Profile />
       <section class="repodata text-center">
@@ -29,10 +27,12 @@
  </div>
 </template>
 <script>
+import Header from "./components/Header"
 import Profile from "./components/Profile"
 export default {
   name: 'app',
   components: {
+    Header,
     Profile
   },
   data () {
