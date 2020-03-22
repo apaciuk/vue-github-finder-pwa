@@ -89,7 +89,6 @@ export default {
     play (repo) {
       if (typeof repo.src != "undefined") {
         this.current = repo;
-
         this.repodata.src = this.current.src;
       }
 
@@ -100,8 +99,8 @@ export default {
           this.index = 0;
         }
 
-        this.current = this.repos[this.index];
-        this.play(this.current);
+      this.current = this.repos[this.index];
+      this.play(this.current);
       }.bind(this));
       this.isPlaying = true;
     },
@@ -114,7 +113,6 @@ export default {
       if (this.index > this.repos.length - 1) {
         this.index = 0;
       }
-
       this.current = this.repos[this.index];
       this.play(this.current);
     },
@@ -152,13 +150,16 @@ header {
 	background-color: rgb(212, 32, 116);
 	color: #FFF;
 }
-.pro-img {
+.user-img {
   border-radius: 50%;
-  margin-bottom: 8px;
+  margin-top: 10px;
 }
-h2.user-profile {
-  margin-top:25px;
-   margin-bottom:20px;
+.repodata,
+.profile-details {
+display: none;
+}
+.profile-search {
+  margin-top:40px;
 }
 .repodata,
 .profile-details,
@@ -168,7 +169,9 @@ h2.user-profile {
   margin: 0 auto;
   margin-bottom: 30px;
   max-width: 768px;
-  max-width: 768px;
+}
+.search-box {
+margin-top:300px;
 }
 .search-box .textfield > input {
   display: block;
@@ -243,10 +246,6 @@ button:hover {
   font-weight: 700;
   cursor: pointer;
 }
-.repos .repo:hover {
-  color: green;
-}
-
 .repos .repo.playing {
   color: #FFF;
  background-color: #2d3436;
