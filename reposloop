@@ -1,0 +1,3 @@
+ <button v-for="repo in repos" :key="repo.src" @click="play(repo)" :class="(repo.src == current.src) ? 'repo playing' : 'repo'">
+          {{ repo.title }} - {{ repo.artist }}
+        </button>
