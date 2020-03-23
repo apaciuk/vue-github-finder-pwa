@@ -4,7 +4,7 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
     <b-navbar-brand tag="h1" class="mb-0" href="/">Gitfinder General</b-navbar-brand>
     <div class="pull-right">
-    <button type="submit"><i class="icon-refresh"></i> Test</button>
+   <button class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
     </div>
    </b-navbar>
     </div>
@@ -41,10 +41,10 @@
        </div>
         <br>
        </div>
-</section>
+      </section>
       <section class="repodata text-center">
          <h2 class="text-center section-title">Latest Repos</h2>
-         <h2 v-for="index in repos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
+         <h2 v-for="index in getRepos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
         <br />
               <ul class="list-group">
                <li class="list-group-item d-flex justify-content-between align-items-center">Forks: Repo Forks Count</li>
@@ -56,10 +56,10 @@
          <a href="#" target="_blank" class="btn btn-lg btn-primary">Repo Page</a>
          </ul>
         <div class="controls">
-          <!--<btn class="btn-success btn-lg prev" @click="prev">Prev</btn>-->
-          <!--<button class="btn-success btn-lg play" v-if="!isPlaying" @click="play">View</button>-->
+          <btn class="btn-success btn-lg prev" @click="prev">Prev</btn>
+         <!-- <button class="btn-success btn-lg play" v-if="!isViewing" @click="play">View</button>-->
           <!--<button class="pause" v-else @click="pause">Pause</button>-->
-         <!--<button class="btn-success btn-lg next" @click="next">Next</button>-->
+         <button class="btn-success btn-lg next" @click="next">Next</button>
         </div>
       </section>
     </div>
@@ -86,16 +86,15 @@ export default {
       this.$watch("localValue", value => {
       this.$emit("input", value);
       });
-      //this.details = this.repos[this.index];
-      //this.repodata.src = this.details.src;
+      this.repos = this.repos[this.index];
   },
   methods: {
-       async fetchData(e) {
+       fetchData(e) {
         let config = {
           headers: {
             'Accept': 'application/json'
           }
-        }
+        };
         if (e.key == "Enter") {
         fetch(`${this.url_base}${this.localValue}`, config)
           .then(res => {
@@ -104,25 +103,28 @@ export default {
       }
       },
        setResults(results) {
-        let config = {
-          headers: {
-            'Accept': 'application/json'
-        }
-      }
        this.details = results;
        document.querySelector(".profile-details").style.display = "block";
        document.querySelector(".repodata").style.display = "block";
        document.querySelector(".search-box").style.display = "none";
-       fetch(`${this.url_base}${this.localValue}` + '/repos', config)
-       .then(res => {
-        return res.json()
-        .then((data) => {
-        let repos = data;
-        console.log(repos);
-      })
-    })
+  },
+  getRepos() {
+         let config = {
+          headers: {
+            'Accept': 'application/json'
+          }
+        };
+        fetch(`${this.url_base}${this.localValue}` + '/repos', config)
+          .then(res => res.json())
+         
+
+
+
+      },
+  prev() {},
+  next() {},
+  computed: {}
   }
- }
 }
 </script>
 
