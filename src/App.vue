@@ -2,7 +2,10 @@
   <div id="app">
     <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand tag="h1" class="mb-0" href="/">Gitfinder</b-navbar-brand>
+    <b-navbar-brand tag="h1" class="mb-0" href="/">Gitfinder General</b-navbar-brand>
+    <div class="pull-right">
+    <button type="submit"><i class="icon-refresh"></i> Test</button>
+    </div>
    </b-navbar>
     </div>
     <div class="container">
@@ -12,7 +15,7 @@
           <img class="user-img" :src="details.avatar_url" width="200px;" />
          <br />
          <br />
-         <btn class="btn-dark btn-lg btn-block"><a href="#">View Profile</a></btn>
+         <btn class="btn-dark btn-lg btn-block"><a href="#" style="color: #fff; text-decoration:none;">View Profile</a></btn>
           <br /><br />
               <div class="column-md-12">
               <span class="badge badge-secondary"><strong>Public Repos:</strong>{{ details.public_repos }}</span>
