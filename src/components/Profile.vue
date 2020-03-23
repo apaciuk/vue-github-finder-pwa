@@ -1,8 +1,8 @@
 <template>
  <section class="profile-search text-center">
-      <div class="profile-details">
+      <div class="profile-details text-center">
           <h2 class="user-title">{{ details.name }}</h2>
-         <img class="user-img" src="@/assets/img/avatar.jpg" width="200px;" />
+          <img class="user-img" :src="details.avatar_url" width="200px;" />
          <br />
          <br />
          <btn class="btn-dark btn-lg btn-block"><a href="#">View Profile</a></btn>
@@ -13,13 +13,13 @@
               <span class="badge badge-success"><strong>Followers:</strong>{{ details.followers }}</span>
               <span class="badge badge-info"><strong>Following:</strong>{{ details.following }}</span>
               <br><br>
-               <ul class="list-group">
+              <ul class="list-group">
              <li class="list-group-item d-flex justify-content-between align-items-center">Company: {{ details.company }}</li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Website/blog: <a href="#" target="_blank">{{ details.blog }}</a></li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Location: {{ details.location }}</li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Member Since: {{ details.created_at }}</li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Bio: {{ details.bio }}</li>
-              </ul>
+            </ul>
           </div>
         </div>
         <div class="search-box">
@@ -43,7 +43,8 @@ export default {
     return {
      localValue: "",
      details: {},
-     url_base: 'https://api.github.com/users/'
+     url_base: 'https://api.github.com/users/',
+     avatar_url: ""
     };
   },
   created() {
@@ -72,6 +73,8 @@ export default {
        document.querySelector(".repodata").style.display = "block";
        document.querySelector(".search-box").style.display = "none";
        console.log(results);
+
+
     }
   }
 }

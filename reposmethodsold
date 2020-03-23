@@ -1,0 +1,39 @@
+play (repo) {
+      if (typeof repo.src != "undefined") {
+        this.details = repo;
+        this.repodata = this.details;
+      }
+      this.repodata.play();
+      this.repodata.addEventListener('ended', function () {
+        this.index++;
+        if (this.index > this.repos.length - 1) {
+          this.index = 0;
+        }
+
+      this.current = this.repos[this.index];
+      this.play(this.current);
+      }.bind(this));
+      this.isPlaying = true;
+    },
+    pause () {
+      this.repodata.pause();
+      this.isPlaying = false;
+    },
+    next () {
+      this.index++;
+      if (this.index > this.repos.length - 1) {
+        this.index = 0;
+      }
+      this.current = this.repos[this.index];
+      this.play(this.current);
+    },
+    prev () {
+      this.index--;
+      if (this.index < 0) {
+        this.index = this.repos.length - 1;
+      }
+
+      this.current = this.repos[this.index];
+      this.play(this.current);
+    }
+  },

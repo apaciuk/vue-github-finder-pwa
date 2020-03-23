@@ -1,11 +1,47 @@
 <template>
   <div id="app">
-    <Header />
+    <div>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+    <b-navbar-brand tag="h1" class="mb-0" href="/">Gitfinder</b-navbar-brand>
+   </b-navbar>
+    </div>
     <div class="container">
-     <Profile />
+    <section class="profile-search text-center">
+      <div class="profile-details text-center">
+          <h2 class="user-title">{{ details.name }}</h2>
+          <img class="user-img" :src="details.avatar_url" width="200px;" />
+         <br />
+         <br />
+         <btn class="btn-dark btn-lg btn-block"><a href="#">View Profile</a></btn>
+          <br /><br />
+              <div class="column-md-12">
+              <span class="badge badge-secondary"><strong>Public Repos:</strong>{{ details.public_repos }}</span>
+              <span class="badge badge-primary"><strong>Public Gists:</strong>{{ details.public_gists }}</span>
+              <span class="badge badge-success"><strong>Followers:</strong>{{ details.followers }}</span>
+              <span class="badge badge-info"><strong>Following:</strong>{{ details.following }}</span>
+              <br><br>
+              <ul class="list-group">
+             <li class="list-group-item d-flex justify-content-between align-items-center">Company: {{ details.company }}</li>
+             <li class="list-group-item d-flex justify-content-between align-items-center">Website/blog: <a href="#" target="_blank">{{ details.blog }}</a></li>
+             <li class="list-group-item d-flex justify-content-between align-items-center">Location: {{ details.location }}</li>
+             <li class="list-group-item d-flex justify-content-between align-items-center">Member Since: {{ details.created_at }}</li>
+             <li class="list-group-item d-flex justify-content-between align-items-center">Bio: {{ details.bio }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="search-box">
+        <div class="textfield">
+        <input
+        v-model="localValue"
+        @keypress="fetchData"
+        placeholder="Enter Github User Name">
+       </div>
+        <br>
+       </div>
+</section>
       <section class="repodata text-center">
          <h2 class="text-center section-title">Latest Repos</h2>
-       <h2 class="repo-title">{{ current.title }} - <span>{{ current.artist }}</span></h2>
+         <h2 v-for="index in repos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
         <br />
               <ul class="list-group">
                <li class="list-group-item d-flex justify-content-between align-items-center">Forks: Repo Forks Count</li>
@@ -17,119 +53,73 @@
          <a href="#" target="_blank" class="btn btn-lg btn-primary">Repo Page</a>
          </ul>
         <div class="controls">
-          <btn class="btn-success btn-lg prev" @click="prev">Prev</btn>
-          <!--<button class="play" v-if="!isPlaying" @click="play">Play</button>-->
+          <!--<btn class="btn-success btn-lg prev" @click="prev">Prev</btn>-->
+          <!--<button class="btn-success btn-lg play" v-if="!isPlaying" @click="play">View</button>-->
           <!--<button class="pause" v-else @click="pause">Pause</button>-->
-          <button class="btn-success btn-lg next" @click="next">Next</button>
+         <!--<button class="btn-success btn-lg next" @click="next">Next</button>-->
         </div>
       </section>
     </div>
  </div>
 </template>
 <script>
-import Header from "./components/Header"
-import Profile from "./components/Profile"
 export default {
   name: 'app',
-  components: {
-    Header,
-    Profile
+   props: {
+    value: String
   },
   data () {
     return {
-      current: {},
-      index: 0,
-      isPlaying: false,
-      repos: [
-        {
-          title: 'Blocks',
-          artist: 'Cybersynth',
-          src: require('./assets/music/blocks.mp3')
-        },
-        {
-          title: 'Grateful',
-          artist: 'Neffex',
-          src: require('./assets/music/grateful.mp3')
-        },
-        {
-          title: 'Invincible',
-          artist: 'Deaf Kev',
-          src: require('./assets/music/invincible.mp3')
-        },
-        {
-          title: 'After',
-          artist: 'Wheezy',
-          src: require('./assets/music/after.mp3')
-        },
-        {
-          title: 'Synth',
-          artist: 'Artful Dodger',
-          src: require('./assets/music/synth.mp3')
-        },
-        {
-          title: 'Beach',
-          artist: 'Barmy',
-          src: require('./assets/music/beach.mp3')
-        },
-        {
-          title: 'Swing',
-          artist: 'Foolhardy',
-          src: require('./assets/music/swing.mp3')
-        },
-         {
-          title: 'Unkown Known',
-          artist: 'Breezeblock',
-          src: require('./assets/music/unknown.mp3')
-        }
-      ],
-      repodata: new Audio()
-    }
-  },
-  methods: {
-    play (repo) {
-      if (typeof repo.src != "undefined") {
-        this.current = repo;
-        this.repodata.src = this.current.src;
-      }
-
-      this.repodata.play();
-      this.repodata.addEventListener('ended', function () {
-        this.index++;
-        if (this.index > this.repos.length - 1) {
-          this.index = 0;
-        }
-
-      this.current = this.repos[this.index];
-      this.play(this.current);
-      }.bind(this));
-      this.isPlaying = true;
-    },
-    pause () {
-      this.repodata.pause();
-      this.isPlaying = false;
-    },
-    next () {
-      this.index++;
-      if (this.index > this.repos.length - 1) {
-        this.index = 0;
-      }
-      this.current = this.repos[this.index];
-      this.play(this.current);
-    },
-    prev () {
-      this.index--;
-      if (this.index < 0) {
-        this.index = this.repos.length - 1;
-      }
-
-      this.current = this.repos[this.index];
-      this.play(this.current);
+     localValue: "",
+     details: {},
+     avatar_url: "",
+     url_base: 'https://api.github.com/users/',
+     index: 0,
+     repos: []
     }
   },
   created () {
-    this.current = this.repos[this.index];
-    this.repodata.src = this.current.src;
+      this.localValue = this.value;
+      this.$watch("localValue", value => {
+      this.$emit("input", value);
+      });
+      //this.details = this.repos[this.index];
+      //this.repodata.src = this.details.src;
+  },
+  methods: {
+       async fetchData(e) {
+        let config = {
+          headers: {
+            'Accept': 'application/json'
+          }
+        }
+        if (e.key == "Enter") {
+        fetch(`${this.url_base}${this.localValue}`, config)
+          .then(res => {
+            return res.json();
+          }).then(this.setResults);
+      }
+      },
+       setResults(results) {
+        let config = {
+          headers: {
+            'Accept': 'application/json'
+        }
+      }
+       this.details = results;
+       document.querySelector(".profile-details").style.display = "block";
+       document.querySelector(".repodata").style.display = "block";
+       document.querySelector(".search-box").style.display = "none";
+       fetch(`${this.url_base}${this.localValue}` + '/repos', config)
+       .then(res => {
+        return res.json()
+        .then((data) => {
+        let repos = data;
+        console.log(repos);
+      })
+    })
   }
+ }
 }
 </script>
 
