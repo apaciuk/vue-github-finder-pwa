@@ -78,6 +78,7 @@ export default {
      avatar_url: "",
      url_base: 'https://api.github.com/users/',
      index: 0,
+     getRepos() {},
      repos: []
     }
   },
@@ -87,6 +88,26 @@ export default {
       this.$emit("input", value);
       });
       this.repos = this.repos[this.index];
+  },
+  mounted: {
+        getRepos(e) {
+         var config = {
+          headers: {
+            'Accept': 'application/json'
+          }
+        };
+        if (e.key == "Enter") {
+        fetch(`${this.url_base}${this.localValue}` + '/repos', config)
+          .then(res => res.json())
+          .then(data => {
+            let repos = [];
+            data.forEach(item => {
+            repos = [...repos, ...Object.values(item)];
+            });
+            console.log(repos);
+            });
+         }
+      }
   },
   methods: {
        fetchData(e) {
@@ -104,28 +125,11 @@ export default {
       },
        setResults(results) {
        this.details = results;
-       console.log(this.details);
+       //console.log(this.details);
        document.querySelector(".profile-details").style.display = "block";
        document.querySelector(".repodata").style.display = "block";
        document.querySelector(".search-box").style.display = "none";
   },
-  getRepos() {
-         var config = {
-          headers: {
-            'Accept': 'application/json'
-          }
-        };
-        fetch(`${this.url_base}${this.localValue}` + '/repos', config)
-          .then(res => res.json())
-          .then(data => {
-            let repos = [];
-            data.forEach(item => {
-            repos = [...repos, ...Object.values(item)];
-            });
-            //console.log(repos);
-            });
-      
-},
   prev() {},
   next() {},
   computed: {}
