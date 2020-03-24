@@ -16,7 +16,16 @@
          <br />
          <br />
          <btn class="btn-dark btn-lg btn-block"><a href="#" style="color: #fff; text-decoration:none;">View Profile</a></btn>
-          <br /><br />
+          <br />
+          <div>
+           <b-card class="text-center">
+             <b-card-title>For Hire? {{ details.hireable }}</b-card-title>
+          <div class="bg-success text-light mt-4 mb-4">
+            {{ details.bio }}
+         </div>
+    </b-card>
+</div>
+           <br />
               <div class="column-md-12">
               <span class="badge badge-secondary"><strong>Public Repos:</strong>{{ details.public_repos }}</span>
               <span class="badge badge-primary"><strong>Public Gists:</strong>{{ details.public_gists }}</span>
@@ -28,8 +37,7 @@
              <li class="list-group-item d-flex justify-content-between align-items-center">Website/blog: <a href="#" target="_blank">{{ details.blog }}</a></li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Location: {{ details.location }}</li>
              <li class="list-group-item d-flex justify-content-between align-items-center">Member Since: {{ details.created_at }}</li>
-             <li class="list-group-item d-flex justify-content-between align-items-center">Bio: {{ details.bio }}</li>
-            </ul>
+           </ul>
           </div>
         </div>
         <div class="search-box">
@@ -44,7 +52,7 @@
       </section>
       <section class="repodata text-center">
          <h2 class="text-center section-title">Latest Repos</h2>
-         <h2 v-for="index in getRepos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
+         <h2 v-for="index in repos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
         <br />
               <ul class="list-group">
                <li class="list-group-item d-flex justify-content-between align-items-center">Forks: Repo Forks Count</li>
@@ -78,7 +86,6 @@ export default {
      avatar_url: "",
      url_base: 'https://api.github.com/users/',
      index: 0,
-     getRepos() {},
      repos: []
     }
   },
@@ -89,47 +96,33 @@ export default {
       });
       this.repos = this.repos[this.index];
   },
-  mounted: {
-        getRepos(e) {
-         var config = {
-          headers: {
-            'Accept': 'application/json'
-          }
-        };
-        if (e.key == "Enter") {
-        fetch(`${this.url_base}${this.localValue}` + '/repos', config)
+  methods: {
+       fetchData(e) {
+       if (e.key == "Enter") {
+        fetch(`${this.url_base}${this.localValue}`)
+          .then(res => {
+            return res.json();
+          }).then(this.setResults)
+        }
+        this.getRepos();
+      },
+       setResults(results) {
+       this.details = results;
+       //console.log("It Works");
+       document.querySelector(".profile-details").style.display = "block";
+       document.querySelector(".repodata").style.display = "block";
+       document.querySelector(".search-box").style.display = "none";
+    },
+       getRepos() {
+         fetch(`${this.url_base}${this.localValue}` + '/repos')
           .then(res => res.json())
           .then(data => {
             let repos = [];
             data.forEach(item => {
             repos = [...repos, ...Object.values(item)];
             });
-            console.log(repos);
             });
-         }
-      }
-  },
-  methods: {
-       fetchData(e) {
-        let config = {
-          headers: {
-            'Accept': 'application/json'
-          }
-        };
-        if (e.key == "Enter") {
-        fetch(`${this.url_base}${this.localValue}`, config)
-          .then(res => {
-            return res.json();
-          }).then(this.setResults)
-      }
       },
-       setResults(results) {
-       this.details = results;
-       //console.log(this.details);
-       document.querySelector(".profile-details").style.display = "block";
-       document.querySelector(".repodata").style.display = "block";
-       document.querySelector(".search-box").style.display = "none";
-  },
   prev() {},
   next() {},
   computed: {}
