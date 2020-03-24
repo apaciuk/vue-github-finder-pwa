@@ -99,28 +99,33 @@ export default {
         fetch(`${this.url_base}${this.localValue}`, config)
           .then(res => {
             return res.json();
-          }).then(this.setResults);
+          }).then(this.setResults)
       }
       },
        setResults(results) {
        this.details = results;
+       console.log(this.details);
        document.querySelector(".profile-details").style.display = "block";
        document.querySelector(".repodata").style.display = "block";
        document.querySelector(".search-box").style.display = "none";
   },
   getRepos() {
-         let config = {
+         var config = {
           headers: {
             'Accept': 'application/json'
           }
         };
         fetch(`${this.url_base}${this.localValue}` + '/repos', config)
           .then(res => res.json())
-         
-
-
-
-      },
+          .then(data => {
+            let repos = [];
+            data.forEach(item => {
+            repos = [...repos, ...Object.values(item)];
+            });
+            //console.log(repos);
+            });
+      
+},
   prev() {},
   next() {},
   computed: {}
