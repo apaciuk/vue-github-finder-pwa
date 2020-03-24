@@ -18,13 +18,10 @@
          <btn class="btn-dark btn-lg btn-block"><a href="#" style="color: #fff; text-decoration:none;">View Profile</a></btn>
           <br />
           <div>
-           <b-card class="text-center">
-             <b-card-title>For Hire? {{ details.hireable }}</b-card-title>
-          <div class="bg-success text-light mt-4 mb-4">
-            {{ details.bio }}
-         </div>
-    </b-card>
-</div>
+            <b-card class="text-center">
+              <b-card-body>{{ details.bio }}</b-card-body>
+           </b-card>
+          </div>
            <br />
               <div class="column-md-12">
               <span class="badge badge-secondary"><strong>Public Repos:</strong>{{ details.public_repos }}</span>
