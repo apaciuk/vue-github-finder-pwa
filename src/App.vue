@@ -99,8 +99,8 @@ export default {
       this.repos = this.repos[this.id];
   },
   methods: {
-       fetchData(e) {
-       if (e.key == "Enter") {
+        fetchData(e) {
+        if (e.key == "Enter") {
         fetch(`${this.url_base}${this.localValue}`)
           .then(res => {
             return res.json();
@@ -110,7 +110,6 @@ export default {
       },
        setResults(results) {
        this.details = results;
-       //console.log("It Works");
        document.querySelector(".profile-details").style.display = "block";
        document.querySelector(".repodata").style.display = "block";
        document.querySelector(".search-box").style.display = "none";
