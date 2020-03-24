@@ -3,15 +3,14 @@
     <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
     <b-navbar-brand tag="h1" class="mb-0" href="/">Gitfinder General</b-navbar-brand>
-    <div class="pull-right">
-   <button class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
-    </div>
-   </b-navbar>
+    </b-navbar>
     </div>
     <div class="container">
     <section class="profile-search text-center">
       <div class="profile-details text-center">
+        <b-card variant="info">
           <h2 class="user-title">{{ details.name }}</h2>
+        </b-card>
           <img class="user-img" :src="details.avatar_url" width="200px;" />
          <br />
          <br />
@@ -48,25 +47,29 @@
        </div>
       </section>
       <section class="repodata text-center">
-         <h2 class="text-center section-title">Latest Repos</h2>
-         <h2 v-for="index in repos" :key="index" class="repo-title">{{ repos.name }} - <span>{{ repos.description }}</span></h2>
-        <br />
-              <ul class="list-group">
-               <li class="list-group-item d-flex justify-content-between align-items-center">Forks: Repo Forks Count</li>
-               <li class="list-group-item d-flex justify-content-between align-items-center">Watchers: Repo Watchers Count</li>
-               <li class="list-group-item d-flex justify-content-between align-items-center">Stars: Repo Page</li>
-               </ul>
-               <ul class="list-group">
-               <br />
-         <a href="#" target="_blank" class="btn btn-lg btn-primary">Repo Page</a>
-         </ul>
-        <div class="controls">
+         <div class="controls">
           <btn class="btn-success btn-lg prev" @click="prev">Prev</btn>
-         <!-- <button class="btn-success btn-lg play" v-if="!isViewing" @click="play">View</button>-->
+         <!--<button class="btn-success btn-lg play" v-if="!isViewing" @click="play">View</button>-->
           <!--<button class="pause" v-else @click="pause">Pause</button>-->
          <button class="btn-success btn-lg next" @click="next">Next</button>
         </div>
-      </section>
+           <b-card class="text-center">
+           <b-card-title><h2 class="text-center section-title">Latest Repos</h2></b-card-title>
+           <h4 v-for="repo in repos" v-bind:key="repo.title" class="repo-name">{{ repo.name }} - <span>{{ repo.description }}</span></h4>
+           <ul class="list-group">
+               <li class="list-group-item d-flex justify-content-between align-items-center">Created: Created Repo Page</li>
+               <li class="list-group-item d-flex justify-content-between align-items-center">Updated: Updated Repo Page</li>
+               <li class="list-group-item d-flex justify-content-between align-items-center">Forks: Repo Forks Count</li>
+               <li class="list-group-item d-flex justify-content-between align-items-center">Watchers: Repo Watchers Count</li>
+               <li class="list-group-item d-flex justify-content-between align-items-center">Stars: Repo Stars Page</li>
+            </ul>
+           </b-card>
+           <br />
+            <ul class="list-group">
+             <a href="#" target="_blank" class="btn btn-lg btn-primary">View Repo</a>
+             <br />
+             </ul>
+        </section>
     </div>
  </div>
 </template>
@@ -77,12 +80,14 @@ export default {
     value: String
   },
   data () {
-    return {
+     return {
      localValue: "",
      details: {},
      avatar_url: "",
      url_base: 'https://api.github.com/users/',
-     index: 0,
+     //index: 0,
+     isViewing: false,
+     current: {},
      repos: []
     }
   },
@@ -91,7 +96,7 @@ export default {
       this.$watch("localValue", value => {
       this.$emit("input", value);
       });
-      this.repos = this.repos[this.index];
+      this.repos = this.repos[this.id];
   },
   methods: {
        fetchData(e) {
@@ -136,14 +141,6 @@ export default {
 body {
 	font-family: sans-serif;
 }
-header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 15px;
-	background-color: rgb(212, 32, 116);
-	color: #FFF;
-}
 .user-img {
   border-radius: 50%;
   margin-top: 10px;
@@ -187,14 +184,14 @@ margin-top:300px;
  background-color:rgba(180, 219, 182, 0.5);
  border-radius: 16px 0px 16px 0px;
 }
-.repo-title {
+.repo-name {
   color: #53565A;
   font-size: 32px;
   font-weight: 700;
   text-transform: uppercase;
   text-align: center;
 }
-.repo-title span {
+.repo-name span {
   font-weight: 400;
   font-style: italic;
 }
