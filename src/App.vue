@@ -8,7 +8,7 @@
     <div class="container">
     <section class="profile-search text-center">
       <div class="profile-details text-center">
-        <b-card variant="info">
+        <b-card>
           <h2 class="user-title">{{ details.name }}</h2>
         </b-card>
           <img class="user-img" :src="details.avatar_url" width="200px;" />
@@ -55,7 +55,7 @@
         </div>
            <b-card class="text-center">
            <b-card-title><h2 class="text-center section-title">Latest Repos</h2></b-card-title>
-           <h4 v-for="repo in repos" v-bind:key="repo.title" class="repo-name">{{ repo.name }} - <span>{{ repo.description }}</span></h4>
+           <h4 v-for="repo in repos" v-bind:key="repo.id" class="repo-name">{{ repo.name }} - <span>{{ repo.description }}</span></h4>
            <ul class="list-group">
                <li class="list-group-item d-flex justify-content-between align-items-center">Created: Created Repo Page</li>
                <li class="list-group-item d-flex justify-content-between align-items-center">Updated: Updated Repo Page</li>
@@ -117,16 +117,11 @@ export default {
        getRepos() {
          fetch(`${this.url_base}${this.localValue}` + '/repos')
           .then(res => res.json())
-          .then(data => {
-            let repos = [];
-            data.forEach(item => {
-            repos = [...repos, ...Object.values(item)];
-            });
-            });
+          .then(data => { this.repos = data });
       },
   prev() {},
-  next() {},
-  computed: {}
+  view() {},
+  next() {}
   }
 }
 </script>
