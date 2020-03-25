@@ -7,7 +7,11 @@ Github Finder to find last 50 projects of a github user with details, links and 
 Paul Anthony McGowan
 
 # Demo
+http://young-camera.surge.sh/
 
+(temporary demo, not finished yet)
+
+New advanced version shortly
 
 # Repo
 

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.ea73b03d52757a8fb3542e151ce97e34.js"
+  "/precache-manifest.78c5775305cbd91803362248126f618c.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "vue-github-finder-pwa"});

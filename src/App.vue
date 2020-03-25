@@ -85,7 +85,7 @@ export default {
      details: {},
      avatar_url: "",
      url_base: 'https://api.github.com/users/',
-     //index: 0,
+     index: 0,
      isViewing: false,
      current: {},
      repos: []
